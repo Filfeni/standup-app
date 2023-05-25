@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Standup {
+  id          Int           @id @default(autoincrement())
+  title       String        @db.NVarChar(255)
+  description String        @db.NVarChar(1000)
+  createdBy   Int
+  disabled    Boolean       @default(false)
+  StandupUser StandupUser[]
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  auth0Id     String        @db.NVarChar(250)
+  email       String?       @db.NVarChar(255)
+  userName    String?       @db.NVarChar(255)
+  StandupUser StandupUser[]
+}
+
+model StandupUser {
+  id            Int             @id @default(autoincrement())
+  standUp       Standup         @relation(fields: [standupId], references: [id])
+  standupId     Int
+  user          User            @relation(fields: [userId], references: [id])
+  userId        Int
+  StandupUpdate StandupUpdate[]
+}
+
+model StandupUpdate {
+  id            Int         @id @default(autoincrement())
+  wasDoing      String?     @db.NVarChar(4000)
+  willDo        String?     @db.NVarChar(4000)
+  blockers      String?     @db.NVarChar(4000)
+  createdDate   DateTime    @db.DateTimeOffset
+  modifiedDate  DateTime?   @db.DateTimeOffset
+  missingInfo   Boolean     @default(true)
+  disabled      Boolean     @default(false)
+  standupUser   StandupUser @relation(fields: [standupUserId], references: [id])
+  standupUserId Int
+}
