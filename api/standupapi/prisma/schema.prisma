@@ -13,7 +13,7 @@ datasource db {
 model Standup {
   id          Int           @id @default(autoincrement())
   title       String        @db.NVarChar(255)
-  description String        @db.NVarChar(1000)
+  description String?       @db.NVarChar(1000)
   createdBy   Int
   disabled    Boolean       @default(false)
   StandupUser StandupUser[]
@@ -21,7 +21,7 @@ model Standup {
 
 model User {
   id          Int           @id @default(autoincrement())
-  auth0Id     String        @db.NVarChar(250)
+  auth0Id     String        @unique @db.NVarChar(250)
   email       String?       @db.NVarChar(255)
   userName    String?       @db.NVarChar(255)
   StandupUser StandupUser[]
@@ -29,6 +29,7 @@ model User {
 
 model StandupUser {
   id            Int             @id @default(autoincrement())
+  accepted      Boolean
   standUp       Standup         @relation(fields: [standupId], references: [id])
   standupId     Int
   user          User            @relation(fields: [userId], references: [id])
