@@ -37,7 +37,18 @@ export class StandupService {
         });
     }
 
-    async changeDisabledStatus(id: number, disabled: boolean) : boolean {
+    async updateStandup(params: {
+      where: Prisma.StandupWhereUniqueInput;
+      data: Prisma.StandupUpdateInput
+    }) {
+      const {where, data} = params;
+      return this.prisma.standup.update({
+        where,
+        data
+      });
+    }
+
+    async changeDisabledStatus(id: number, disabled: boolean) : Promise<boolean> {
         this.prisma.standup.update({
             where: {
               id: id,
@@ -45,6 +56,8 @@ export class StandupService {
             data: {
                 disabled: disabled
             },
-          })
+          }).then(()=>{return true})
+          .catch(()=> {return false})
+          return false;
     }
 }
