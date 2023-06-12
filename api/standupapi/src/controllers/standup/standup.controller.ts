@@ -1,6 +1,5 @@
 import { Prisma, Standup, StandupUpdate } from '.prisma/client';
-import { Body, Controller, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Post, Put } from '@nestjs/common';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
 import { createStandupUpdateRequestDto } from 'src/models/standup-update/create-standup-update.dto';
 import { createStandupRequestDto } from 'src/models/standup/create-standup.dto';
 import { updateStandupRequestDto } from 'src/models/standup/update-standup.dto';
