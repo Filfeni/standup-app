@@ -1,5 +1,5 @@
 import { Prisma, Standup, StandupUpdate } from '.prisma/client';
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { createStandupUpdateRequestDto } from 'src/models/standup-update/create-standup-update.dto';
 import { createStandupRequestDto } from 'src/models/standup/create-standup.dto';
 import { updateStandupRequestDto } from 'src/models/standup/update-standup.dto';
@@ -8,7 +8,9 @@ import { StandupUpdateService } from 'src/services/standup-updates/standup-updat
 import { StandupUserService } from 'src/services/standup-user/standup-user.service';
 import { StandupService } from 'src/services/standup/standup.service';
 import { UserService } from 'src/services/user/user.service';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('standup')
 export class StandupController {
     constructor(private authService: AuthService, private standupService: StandupService, 
